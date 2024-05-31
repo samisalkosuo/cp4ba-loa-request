@@ -7,7 +7,7 @@ _Leave-Of-Absence Request_ is a very straight-forward case to show a sample case
 
 _Leave-Of-Absence Request_ case enables Employees to create LOA requests, and managers and HR can review it.
 
-In this video:
+In the video:
 
 . Employee _user1_ logs in, adds new LOA request case and logs out.
 . Manager _user2_ logs in, reviews case, completes Manager review task and logs out.
@@ -15,6 +15,7 @@ In this video:
 . Employee _user1_ logs in again and reviews the case.
 
 ifdef::env-github[]
+.Click to open Youtube video
 image:https://img.youtube.com/vi/ZnK0W5xGqOE/maxresdefault.jpg[link=https://youtu.be/ZnK0W5xGqOE]
 endif::[]
 
