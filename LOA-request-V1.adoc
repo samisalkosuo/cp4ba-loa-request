@@ -25,7 +25,7 @@ video::ZnK0W5xGqOE[youtube]
 endif::[]
 
 
-Here are the steps to create LOA Request case.
+Follow the steps below to create the LOA Request case shown in the video.
 
 == Prereqs
 
