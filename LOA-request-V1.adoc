@@ -118,7 +118,7 @@ Case types define the activities, the document classes , the activity steps, and
 * Click _Stages_ -> _Add Stage_.
 ** Enter name: _Manager review_.
 * Click _Add Stage_.
-** Enter name: HR review_.
+** Enter name: _HR review_.
 * Click _OK All_.
 
 == Test case solution
