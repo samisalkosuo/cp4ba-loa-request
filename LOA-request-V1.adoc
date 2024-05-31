@@ -14,8 +14,9 @@ In the video:
 . HR _user3_ logs in, reviews case, completes HR review task and logs out.
 . Employee _user1_ logs in again and reviews the case.
 
+Click image to open video.
+
 ifdef::env-github[]
-.Click to open Youtube video
 image:https://img.youtube.com/vi/ZnK0W5xGqOE/maxresdefault.jpg[link=https://youtu.be/ZnK0W5xGqOE]
 endif::[]
 
