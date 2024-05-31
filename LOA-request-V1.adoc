@@ -1,0 +1,437 @@
+= Leave-Of-Absence Request
+:toc: left
+:toc-title: Table of Contents
+
+
+_Leave-Of-Absence Request_ is a very straight-forward case to show a sample case management solution done by IBM Business Automation Workflow.
+
+_Leave-Of-Absence Request_ case enables Employees to create LOA requests, and managers and HR can review it.
+
+In this video:
+
+. Employee _user1_ logs in, adds new LOA request case and logs out.
+. Manager _user2_ logs in, reviews case, completes Manager review task and logs out.
+. HR _user3_ logs in, reviews case, completes HR review task and logs out.
+. Employee _user1_ logs in again and reviews the case.
+
+ifdef::env-github[]
+image:https://img.youtube.com/vi/ZnK0W5xGqOE/maxresdefault.jpg[link=https://youtu.be/ZnK0W5xGqOE]
+endif::[]
+
+ifndef::env-github[]
+video::ZnK0W5xGqOE[youtube]
+endif::[]
+
+
+Here are the steps to create LOA Request case.
+
+== Prereqs
+
+* CP4BA installed with BAW authoring and Content capabilities.
+
+== Create case solution
+
+In this section, we create the solution, add roles, add document class and create properties.
+
+=== Create solution
+
+* Go to CP4BA homepage.
+* Click _Design_ -> _Business Automations_.
+* Click _Create_ -> _Workflow_ -> _Workflow automation_.
+* Enter project details:
+** Check _Include case features_.
+* Name: _Leave Of Absence Request V1_ (or something else).
+* Click _Create_
+
+=== Create roles
+
+Case management process includes various roles that do the work.
+
+* Open _Leave Of Absence Request V1_ project.
+* Click _Roles_ -> _Add Role_.
+* Add following roles:
+** Employee
+** Manager
+** HR
+* Remember to click _OK_ and/or _OK All_ when creating roles.
+
+=== Add document class
+
+Create new document that includes LOA request information.
+
+* Click _Documents_ -> _Add Document Class_ -> _New_.
+* Enter name: _Leave of Absence Request_.
+* Unique identifier is created automatically.
+* Click _OK_ to create the class.
+
+=== Create properties
+
+* Click _Data_ to open data page.
+* We need couple of choice lists.
+* Click _Manage Choice Lists_ -> _Add Choice List_.
+* Enter values for the first list:
+** Name: _LOA Type_
+** Items (enter name as Display name, Values is automatically the same):
+*** Vacation
+*** Sick leave
+*** Unpaid time off
+* Click _Manage Choice Lists_ -> _Add Choice List_.
+* Enter values for the second list:
+** Name: _LOA Status_
+** Items (enter name as Display name, Values is automatically the same):
+*** Pending
+*** Approved
+*** Rejected
+* Click _Close_.
+* Click _Add Property_ -> _New_.
+** Enter name: _Employee name_.
+** Click _OK_.
+* Click _Add Property_ -> _New_.
+** Enter name: _LOA Type_.
+** Select Choice list:  _LOA Type_.
+** Click _OK_.
+* Click _Add Property_ -> _New_.
+** Enter name: _LOA Status_.
+** Select Choice list:  _LOA Status_.
+** Click _OK_.
+* Click _Add Property_ -> _New_.
+** Enter name: _Manager comment_.
+** Click _OK_.
+* Click _Add Property_ -> _New_.
+** Enter name: _HR comment_.
+** Click _OK_.
+
+== Create case type
+
+Case types define the activities, the document classes , the activity steps, and the roles that must complete those steps to solve a business problem.
+
+* Click _Case Types_ -> _Add Case Type_.
+** Enter name: _Leave Of Absence Request V1_.
+** Identifiers are automatically filled.
+** Leave others to defaults.
+* Click _Properties_ -> _Add Property_ -> _Existing_ -> _Select all_ -> _OK_.
+* Click _OK All_.
+* Click _Stages_ -> _Add Stage_.
+** Enter name: _Manager review_.
+* Click _Add Stage_.
+** Enter name: HR review_.
+* Click _OK All_.
+
+== Test case solution
+
+Now we can test the solution for the first time.
+
+* Save solution (checkmark icon).
+* Deploy the solution (next to checkmark icon).
+* Start Case Client (far right from the checkmark icon).
+
+=== Create a security configuration
+
+The first time Case Client is started, you'll likely see message like this:
+
+```
+You are not a member of a role that is associated with the following solution: Leave Of Absence Request V1.
+```
+
+* Access Case Administration Client:
+** Navigate from _CP4BA home page.
+** Click _Business automations_ -> _Workflow_.
+* This opens a tiled list of workflow automations.
+* Click _Leave Of Absence Request V1_ tile.
+** Click the three dots left of Open-button.
+** Click _Advanced_.
+* Case administration client is opened.
+* Right-click _Leave Of Absence Request V1_.
+* Select _Manage_ -> _Security configuration_.
+* Manage Security Configuration tab is opened.
+* Select _Create a security configuration_.
+* Click _Next_.
+* Enter Security manifest name: _LeaveOfAbsenceRequestV1_.
+* Click _Next_.
+* Enter permissions for roles:
+** Role _Employee_: Create case, View case.
+** Role _Manager_: View case, Update case.
+** Role _HR_: View case, Update case, Manage case.
+* Click _Next_.
+** Leave administrators and privileges to default.
+* Click _Next_.
+* Click _Add_ to associate users and groups with roles.
+** Select, for example:
+***  user1 as Employee.
+***  user2 as Manager.
+***  user3 as HR.
+* Click _Next_.
+* Select _Apply the security configuration_.
+* Click _Save_ and _Apply_.
+
+Note: there is easier way to add roles while testing by selecting _Leave Of Absence Request V1_ -> _Manage roles_ in Case client. But security configuration is used in production environments.
+
+Access Case client again, using start case icon. Depending on user and role, you can add new case and view cases. But since no activities have been created, nothing can be done.
+
+== Add custom case UIs
+
+Let's modify the case so that we use custom UIs for adding a case and viewing case details. For example, when creating the case Employee-role can only add name and type, and when viewing the case all the fields are read only.
+
+=== Add case UI
+
+* Go to Case type.
+* Click _New Add Case layout_ next to _Default layout for Add Case page_.
+* Enter name: _Custom New Add Case_.
+* Click _OK_.
+* Click _Custom New Add Case_ to open layout in Process Designer.
+* Diagram view is opened.
+* Right-click _Edit Case Properties_ and select _Open_.
+* UI desiger is opened.
+* Select _Variables_ on the right.
+* Scroll to _caseProperties_.
+* Drag and drop the following to blueish _Drop content here_ box:
+** Employeename
+** LOAType
+* Click Save (check icon on upper right).
+* Go back to Case type.
+* Select _Custom New Add Case_ as default layout for Add Case page.
+* Click _Save_ and _Deploy_. 
+
+Open Case client and when adding the case you should see only Employee name and LOA Type fields.
+
+== Case details UI
+
+* Go to Case type.
+* Click _New Case Details layout_ next to _Default layout for Case Details page_.
+* Enter name: _Custom Case Details_.
+* Click _OK_.
+* Click __Custom Case Details_ to open layout in Process Designer.
+* Diagram view is opened.
+* Right-click _Case Details_ and select _Open_.
+* UI desiger is opened.
+* Click _tw.resource.CAT.properties_ in the UI designer.
+** Blueish Drop content here box is shown below tabs.
+* Select _Variables_ on the right.
+* Scroll to _caseProperties_.
+* Drag and drop _caseProperties_ to the _Drop content here_ box.
+* For each field:
+** Click on the name.
+** Select _Visibility_ in the pane below.
+** Change _Editable_ to _Read only_.
+* Click Save (check icon on upper right).
+* Go back to Case type.
+* Select _Custom New Add Case_ as default layout for Add Case page.
+* Click _Save_ and _Deploy_. 
+
+Open Case client and when viewing properties should note that fields are read only.
+
+
+== Add Activities
+
+An activity represents a specific operation that is performed as part of a case. LOA request case has two activities: Manager Review and HR Review.
+
+=== Manager review
+
+* Go to Case type.
+* Click _Activities_ -> _Add Activity_ -> _Activity with New Process_.
+* Enter name: _Manager Review_.
+* Select _Is required_.
+* Click _OK_.
+* Hover the tile, click _Open IBM Process Designer_ icon.
+* Process designer opens, showing process diagram.
+* Click on the empty space of _All users_ lane.
+* In the _Behavior_ section below, click _Select_ to select users for the lane.
+* Select _Manager_.
+* Click _Inline user task_.
+** Activity properties are displayed below the diagram.
+* Change name to: _Manager review_.
+* Change type to: _User task_.
+* In the Implementation-section, click _New_.
+* Enter _Manager review_ as the name of new client-side human service.
+* Click _Next_.
+* Uncheck _activityProperties_.
+* Click _Finish_.
+** This opens Client-side human service editor, showing Coach-activity (UI) in the middle.
+* Right-click activity and click _Open_.
+** This opens UI designer.
+* Select _Variables_ on the right.
+* Find _caseProperties_ and drag and drop it to blueish _Drop content here_ box.
+* Change Visibility to Read only of following fields:
+** Employee name.
+** LOA type.
+* Delete _HRcomment_ field.
+* Click _OK_-button and change name to _Complete review_.
+* Change button color to dark blue.
+* Save by clicking Check-icon on upper right.
+* Go back to _Manager review_ process by closing UI editor by clicking X-icon on upper left.
+* Open _Data mapping_-tab.
+* Click _Open..._.
+* Map _caseProperties_ to caseProperties-input.
+* Click _OK_.
+
+Now we have created UI for Manager review. The next step is to create a script task that completes the _Manager review_-stage.
+
+* Drag and drop a System task (gears-icon) from the right side palette between _Manager review_ and End.
+* Change name to _Handle Manager review stage_.
+* Under _Implementation_, click _New_ to create new Service flow.
+* Enter name: _Handle Manager review stage_.
+* Click _Finish_.
+* Service flow diagram editor opens.
+* Click _Variables_-tab.
+* Click _+_-icon next to _Input_.
+* Enter _loaManagerComment_ as name of the new input variable.
+* Go back to diagram.
+* From the palette on the right, drag and drop _Server script_ activity to diagram (between Start and End).
+* In the properties below, enter name _Handle Manager review stage_.
+* In the _Script_-tab, copy the following:
+
+```
+if(tw.local.loaManagerComment != null && tw.local.loaManagerComment != "" ) {
+// add a comment to the case
+// The "true" input specifies that this action must be performed as an administrator
+tw.system.currentProcessInstance.parentCase.addCommentToCase("Manager commented", true);
+// complete current stage as the administrator
+tw.system.currentProcessInstance.parentCase.completeCurrentStage(true);
+}
+```
+
+* Close service flow editor.
+* Open _Manager review_-process.
+* Click _Handle Manager review stage_-system task.
+* Select _Data mapping_-tab.
+* Click _Open..._.
+* Select variable _caseProperties_ -> _Managercomment_ -> _value_.
+* Click _OK_.
+
+== HR review
+
+* Go to Case type.
+* Click _Activities_ -> _Add Activity_ -> _Activity with New Process_.
+* Enter name: _HR Review_.
+* Select _Is required_.
+* Select _Preconditions_-tab.
+* Select _A stage has started_-precondition.
+* Select _HR review_ as stage.
+* Click _OK_.
+* Hover the tile, click _Open IBM Process Designer_ icon.
+* Process designer opens, showing process diagram.
+* Click on the empty space of _All users_ lane.
+* In the _Behavior_ section below, click _Select_ to select users for the lane.
+* Select _HR_.
+* Click _Inline user task_.
+** Activity properties are displayed below the diagram.
+* Change name to: _HR review_.
+* Change type to: _User task_.
+* In the Implementation-section, click _New_.
+* Enter _HR review_ as the name of new client-side human service.
+* Click _Next_.
+* Uncheck _activityProperties_.
+* Click _Finish_.
+** This opens Client-side human service editor, showing Coach-activity (UI) in the middle.
+* Right-click activity and click _Open_.
+** This opens UI designer.
+* Select _Variables_ on the right.
+* Find _caseProperties_ and drag and drop it to blueish _Drop content here_ box.
+* Change Visibility to Read only of following fields:
+** Employee name.
+** LOA type.
+** Manager comment.
+* Click _OK_-button and change name to _Complete review_.
+* Change button color to dark blue.
+* Save by clicking Check-icon on upper right.
+* Go back to _HR review_ process by closing UI editor by clicking X-icon on upper left.
+* Open _Data mapping_-tab.
+* Click _Open..._.
+* Map _caseProperties_ to caseProperties-input.
+* Click _OK_.
+
+Now we have created UI for HR review. The next step is to create a script task that completes the _HR review_-stage.
+
+* Drag and drop a System task (gears-icon) from the right side palette between _HR review_ and End.
+* Change name to _Handle HR review stage_.
+* Under _Implementation_, click _New_ to create new Service flow.
+* Enter name: _Handle HR review stage_.
+* Click _Finish_.
+* Service flow diagram editor opens.
+* Click _Variables_-tab.
+* Click _+_-icon next to _Input_.
+* Enter _loaHRComment_ as name of the new input variable.
+* Go back to diagram.
+* From the palette on the right, drag and drop _Server script_ activity to diagram (between Start and End).
+* In the properties below, enter name _Handle Manager review stage_.
+* In the _Script_-tab, copy the following:
+
+```
+if(tw.local.loaHRComment != null && tw.local.loaHRComment != "" ) {
+// add a comment to the case
+// The "true" input specifies that this action must be performed as an administrator
+tw.system.currentProcessInstance.parentCase.addCommentToCase("HR commented", true);
+// complete current stage as the administrator
+tw.system.currentProcessInstance.parentCase.completeCurrentStage(true);
+}
+```
+
+* Close service flow editor.
+* Open _HR review_-process.
+* Click _Handle HR review stage_-system task.
+* Select _Data mapping_-tab.
+* Click _Open..._.
+* Select variable _caseProperties_ -> _HRcomment_ -> _value_.
+* Click _OK_.
+
+== Test 
+
+Now we have created activites for Leave Of Absence Request. We also added roles so our test scenarion is like this:
+
+. Employee creates new Leave Of Absence Request.
+. Manager comments the request by adding status and comment
+. HR comments the request by adding comment and optionally modifying status.
+. Case is completed.
+
+Test the solution. This test assumes that _user1_ has Employee role, _user2_ is Manager and _user3_ is HR.
+
+* Go to Business Automation solution.
+* Save and deploy.
+
+=== Employee
+
+* Open a new browser window and go to https://<CP4BA_FQDN>/icn/navigator/.
+* Login as _user1_.
+* Click _Add Case_ -> _Leave Of Absence Request V1_.
+* As Employee-role, only name and type should be visible.
+* Enter values, and click _Add_ to add case.
+* To see the newly created Case, edit search parameters on the left to search Added On today, click _Search_ to search.
+* You should see a list of cases, also the newly created one.
+* Open the case and note that Properties-tab shows read-only values of case properties.
+* Additionally, you can view various case details using this default Case Client.
+
+=== Manager
+
+* Open a new browser window and go to https://<CP4BA_FQDN>/icn/navigator/.
+* Login as _user2_.
+* To see the newly created Cases, edit search parameters on the left to search Added On today, click _Search_ to search.
+* You should see a list of cases, also the one created in previous section.
+* Open the case and note that Properties-tab shows read-only values of case properties.
+* Open _Tasks_-tab to see that there is task waiting for the Manager.
+* Open task and note that UI is the one that was created. 
+** Employee name and LOA type are read-only.
+* Edit values and click _Complete review_.
+* Completion closes the UI and, after a moment, _Manager review_-stage is completed and _HR review_-stage starts.
+** Refresh may be needed.
+
+
+
+=== HR
+
+* Open a new browser window and go to https://<CP4BA_FQDN>/icn/navigator/.
+* Login as _user3_.
+* To see the newly created Cases, edit search parameters on the left to search Added On today, click _Search_ to search.
+* You should see a list of cases, also the one created in previous section.
+* Open the case and note that Properties-tab shows read-only values of case properties.
+* Open _Tasks_-tab to see that there is task waiting for the HR.
+* Open task and note that UI is the one that was created. 
+* Edit values and click _Complete review_.
+* Completion closes the UI and, after a moment, _HR review_-stage is completed and case is completed.
+** Refresh may be needed.
+
+
+== Conclusion
+
+_Leave-Of-Absence Request V1_ solution is now finished. While being a simple case, the implementation showed the steps to create case management process and it's activities. 
+
+The finished process serves as a starting for other case management solutions.
