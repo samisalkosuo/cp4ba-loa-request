@@ -5,6 +5,8 @@
 
 _Leave-Of-Absence Request_ is a very straight-forward case to show a sample case management solution done by IBM Business Automation Workflow.
 
+== Case
+
 _Leave-Of-Absence Request_ case enables Employees to create LOA requests, and managers and HR can review it.
 
 In the video:
